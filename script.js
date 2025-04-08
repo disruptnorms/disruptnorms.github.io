@@ -92,7 +92,62 @@ document.addEventListener('DOMContentLoaded', function() {
             contactForm.reset();
         });
     }
+    //New Medium Code
+    // More robust Medium integration using a proxy service
+async function loadMediumPosts() {
+  const mediumUser = 'stephensmw';
+  const rssUrl = `https://medium.com/feed/@${mediumUser}`;
+  const rssToJsonServiceUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
+  
+  try {
+    const response = await fetch(rssToJsonServiceUrl);
+    const data = await response.json();
     
+    if (data.status === 'ok') {
+      const placeholder = document.querySelector('.blog-placeholder');
+      if (placeholder) placeholder.remove();
+      
+      const posts = data.items.slice(0, 3); // Get the latest 3 posts
+      const mediumPostsContainer = document.getElementById('medium-posts');
+      
+      posts.forEach(post => {
+        // Extract first image from content if available
+        const imgRegex = /<img[^>]+src="([^">]+)"/;
+        const imgMatch = post.content.match(imgRegex);
+        const imgSrc = imgMatch ? imgMatch[1] : null;
+        
+        // Create excerpt from content (strip HTML and limit length)
+        const div = document.createElement('div');
+        div.innerHTML = post.content;
+        const excerpt = div.textContent.slice(0, 120) + '...';
+        
+        const postElement = document.createElement('div');
+        postElement.className = 'blog-card';
+        
+        postElement.innerHTML = `
+          <div class="blog-image">
+            ${imgSrc ? `<img src="${imgSrc}" alt="${post.title}">` : `
+            <div class="image-placeholder">
+              <i class="fas fa-newspaper"></i>
+              <span>Blog Thumbnail</span>
+            </div>`}
+          </div>
+          <div class="blog-content">
+            <div class="blog-meta">${new Date(post.pubDate).toLocaleDateString()} · Medium</div>
+            <h3 class="blog-title">${post.title}</h3>
+            <p class="blog-excerpt">${excerpt}</p>
+            <a href="${post.link}" class="blog-link" target="_blank">Read on Medium →</a>
+          </div>
+        `;
+        
+        mediumPostsContainer.appendChild(postElement);
+      });
+    }
+  } catch (error) {
+    console.error('Error loading Medium posts:', error);
+    // Display error message...
+  }
+}
     // Load Medium posts
     loadMediumPosts();
 });
