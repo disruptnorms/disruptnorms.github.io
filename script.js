@@ -240,3 +240,128 @@ function createGalleryViewer() {
 
 // Call gallery viewer setup when content loads
 window.addEventListener('load', createGalleryViewer);
+
+function loadGallery() {
+  // Gallery categories and their images
+  const galleryData = {
+    fieldwork: [
+      { src: 'gallery/fieldwork/image1.jpg', title: 'Field Research in Location A', description: 'Description of this image' },
+      { src: 'gallery/fieldwork/image2.jpg', title: 'Field Research in Location B', description: 'Description of this image' }
+      // Add more items
+    ],
+    travel: [
+      { src: 'gallery/travel/image1.jpg', title: 'Travel to Location C', description: 'Description of this image' },
+      { src: 'gallery/travel/video1.mp4', title: 'Travel Video', description: 'Description of this video', isVideo: true }
+      // Add more items
+    ],
+    conferences: [
+      { src: 'gallery/conferences/image1.jpg', title: 'Conference X', description: 'Description of this image' }
+      // Add more items
+    ]
+  };
+  
+  const galleryGrid = document.getElementById('gallery-grid');
+  galleryGrid.innerHTML = '';
+  
+  // Combine all categories for 'all' filter
+  const allItems = [];
+  Object.values(galleryData).forEach(category => allItems.push(...category));
+  
+  // Add all items to the gallery
+  allItems.forEach(item => {
+    const galleryItem = document.createElement('div');
+    galleryItem.className = 'gallery-item';
+    galleryItem.setAttribute('data-category', item.category);
+    
+    if (item.isVideo) {
+      galleryItem.innerHTML = `
+        <video src="${item.src}" poster="gallery/thumbnails/${item.src.split('/').pop().replace('.mp4', '.jpg')}" controls></video>
+        <div class="gallery-item-overlay">
+          <h4>${item.title}</h4>
+          <p>${item.description}</p>
+        </div>
+      `;
+    } else {
+      galleryItem.innerHTML = `
+        <img src="${item.src}" alt="${item.title}">
+        <div class="gallery-item-overlay">
+          <h4>${item.title}</h4>
+          <p>${item.description}</p>
+        </div>
+      `;
+    }
+    
+    galleryGrid.appendChild(galleryItem);
+  });
+  
+  // Implement lightbox functionality
+  implementLightbox();
+}
+
+function implementLightbox() {
+  // Add lightbox container to the body
+  const lightboxContainer = document.createElement('div');
+  lightboxContainer.className = 'lightbox-container';
+  lightboxContainer.style.display = 'none';
+  lightboxContainer.innerHTML = `
+    <div class="lightbox-overlay"></div>
+    <div class="lightbox-content">
+      <button class="lightbox-close">&times;</button>
+      <div class="lightbox-media-container"></div>
+      <div class="lightbox-caption"></div>
+    </div>
+  `;
+  document.body.appendChild(lightboxContainer);
+  
+  // Add lightbox styles
+  const style = document.createElement('style');
+  style.textContent = `
+    .lightbox-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000; }
+    .lightbox-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); }
+    .lightbox-content { position: relative; width: 80%; max-width: 1000px; margin: 40px auto; z-index: 1001; }
+    .lightbox-close { position: absolute; top: -40px; right: 0; background: none; border: none; color: white; font-size: 30px; cursor: pointer; }
+    .lightbox-media-container { background: black; display: flex; justify-content: center; align-items: center; }
+    .lightbox-media-container img, .lightbox-media-container video { max-width: 100%; max-height: 80vh; }
+    .lightbox-caption { padding: 15px; background: rgba(0,0,0,0.7); color: white; }
+  `;
+  document.head.appendChild(style);
+  
+  // Add click handlers to gallery items
+  const galleryItems = document.querySelectorAll('.gallery-item');
+  galleryItems.forEach(item => {
+    item.addEventListener('click', function() {
+      const mediaElement = this.querySelector('img') || this.querySelector('video');
+      const caption = this.querySelector('.gallery-item-overlay').innerHTML;
+      
+      const lightboxContainer = document.querySelector('.lightbox-container');
+      const mediaContainer = lightboxContainer.querySelector('.lightbox-media-container');
+      const captionContainer = lightboxContainer.querySelector('.lightbox-caption');
+      
+      mediaContainer.innerHTML = '';
+      if (this.querySelector('video')) {
+        const video = document.createElement('video');
+        video.src = this.querySelector('video').src;
+        video.controls = true;
+        mediaContainer.appendChild(video);
+      } else {
+        const img = document.createElement('img');
+        img.src = this.querySelector('img').src;
+        mediaContainer.appendChild(img);
+      }
+      
+      captionContainer.innerHTML = caption;
+      lightboxContainer.style.display = 'block';
+    });
+  });
+  
+  // Close lightbox on button click
+  document.querySelector('.lightbox-close').addEventListener('click', function() {
+    document.querySelector('.lightbox-container').style.display = 'none';
+  });
+  
+  // Close lightbox on overlay click
+  document.querySelector('.lightbox-overlay').addEventListener('click', function() {
+    document.querySelector('.lightbox-container').style.display = 'none';
+  });
+}
+
