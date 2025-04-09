@@ -69,6 +69,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Load Medium posts
   loadMediumPosts();
+
+  // Load Bluesky posts
+  loadBlueskyPosts();
 });
 
 async function loadMediumPosts() {
@@ -118,7 +121,7 @@ async function loadMediumPosts() {
   } catch (error) {
     console.error('Error loading Medium posts:', error);
   }
-} 
+}
 
 // Create gallery viewer
 function createGalleryViewer() {
@@ -130,3 +133,52 @@ function createGalleryViewer() {
   });
 }
 window.addEventListener('load', createGalleryViewer);
+
+// Bluesky post loader
+async function loadBlueskyPosts() {
+  const handle = 'disruptnorms.com';
+  const feedContainer = document.getElementById('bsky-feed-grid');
+
+  try {
+    const didRes = await fetch(`https://bsky.social/xrpc/com.atproto.identity.resolveHandle?handle=${handle}`);
+    const didData = await didRes.json();
+    const did = didData.did;
+
+    const feedRes = await fetch(`https://bsky.social/xrpc/app.bsky.feed.getAuthorFeed?actor=${did}&limit=5`);
+    const feedData = await feedRes.json();
+
+    feedContainer.innerHTML = '';
+
+    feedData.feed.forEach(item => {
+      const post = item.post.record;
+      const embed = item.post.embed?.images || [];
+      const timestamp = new Date(post.createdAt).toLocaleString();
+
+      const postElement = document.createElement('div');
+      postElement.className = 'gallery-item';
+      postElement.innerHTML = `
+        <div class="image-placeholder">
+          <span>${post.text.slice(0, 100)}...</span>
+        </div>
+        <div class="gallery-item-overlay">
+          <h4>@${handle}</h4>
+          <p>${timestamp}</p>
+        </div>
+      `;
+
+      if (embed.length > 0) {
+        const img = document.createElement('img');
+        img.src = embed[0].thumb;
+        img.alt = 'Post Image';
+        img.style.width = '100%';
+        img.style.borderRadius = '8px';
+        postElement.prepend(img);
+      }
+
+      feedContainer.appendChild(postElement);
+    });
+  } catch (err) {
+    console.error('Failed to load Bluesky feed:', err);
+    feedContainer.innerHTML = '<p style="text-align:center;color:var(--text-muted);">Unable to load Bluesky posts at this time.</p>';
+  }
+}
