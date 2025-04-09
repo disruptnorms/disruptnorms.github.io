@@ -18,20 +18,31 @@
     <script src="script.js" defer></script>
 </head>
 <body>
-    <!-- Original content before Bluesky feed remains unchanged -->
-
-    <!-- Bluesky Feed Section -->
-    <section id="bsky-feed" class="section">
+    <!-- Assuming there are other sections before the About section -->
+    
+    <!-- About Section -->
+    <section id="about" class="section">
         <div class="section-header">
-            <h2>Latest on Bluesky</h2>
+            <h2>About</h2>
             <div class="underline"></div>
         </div>
-        <div class="gallery-grid" id="bsky-feed-grid">
-            <div class="blog-placeholder">
-                <i class="fas fa-spinner fa-pulse"></i>
-                <p>Loading Bluesky posts...</p>
+        <div class="about-content">
+            <!-- About section content here -->
+        </div>
+        
+        <!-- Bluesky Feed now placed at the bottom of the About section -->
+        <div class="bluesky-container">
+            <h3>Latest on Bluesky</h3>
+            <div class="underline-small"></div>
+            <div class="gallery-grid" id="bsky-feed-grid">
+                <div class="blog-placeholder">
+                    <i class="fas fa-spinner fa-pulse"></i>
+                    <p>Loading Bluesky posts...</p>
+                </div>
             </div>
         </div>
     </section>
+    
+    <!-- Other sections would continue here -->
 </body>
 </html>
