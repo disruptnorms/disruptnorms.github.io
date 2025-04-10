@@ -245,10 +245,9 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Configuration
     const pixelfedUsername = 'disruptnorms';
-    const pixelfedInstance = 'pixelfed.social'; // Change this if your account is on a different instance
+    const pixelfedInstance = 'pixelfed.social'; 
     const apiUrl = `https://${pixelfedInstance}/api/v1/accounts/${pixelfedUsername}/statuses?limit=20`;
     
-    // Categories for classification (you'll need to update these or implement a tagging system)
     const categoryMapping = {
         // Map specific keywords in caption/description to categories
         'field': 'fieldwork',
