@@ -214,87 +214,185 @@
             </div>
         </section>
 
-        <section id="gallery" class="section">
-            <div class="section-header">
-                <h2>Gallery</h2>
-                <div class="underline"></div>
+<!-- Gallery Section -->
+<section id="gallery" class="section">
+    <div class="section-header">
+        <h2>Gallery</h2>
+        <div class="underline"></div>
+    </div>
+    <div class="gallery-content">
+        <div class="gallery-description">
+            <p>A collection of images and videos from my field research and travels exploring social phenomena across different cultures.</p>
+        </div>
+        <div class="gallery-filters">
+            <button class="gallery-filter active" data-filter="all">All</button>
+            <button class="gallery-filter" data-filter="fieldwork">Fieldwork</button>
+            <button class="gallery-filter" data-filter="travel">Travel</button>
+            <button class="gallery-filter" data-filter="conferences">Conferences</button>
+        </div>
+        <div class="gallery-grid" id="gallery-grid">
+            <!-- Gallery items will be dynamically inserted here -->
+            <div class="loading-indicator">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Loading images from Pixelfed...</p>
             </div>
-            <div class="gallery-content">
-                <div class="gallery-description">
-                    <p>A collection of images and videos from my field research and travels exploring social phenomena across different cultures.</p>
-                </div>
-                <div class="gallery-filters">
-                    <button class="gallery-filter active" data-filter="all">All</button>
-                    <button class="gallery-filter" data-filter="fieldwork">Fieldwork</button>
-                    <button class="gallery-filter" data-filter="travel">Travel</button>
-                    <button class="gallery-filter" data-filter="conferences">Conferences</button>
-                </div>
-                <div class="gallery-grid" id="gallery-grid">
-                    <!-- Sample gallery items - Replace with your actual content -->
-                    <div class="gallery-item" data-category="fieldwork">
-                        <div class="image-placeholder">
-                            <i class="fas fa-camera"></i>
-                            <span>Fieldwork Photo</span>
-                        </div>
-                        <div class="gallery-item-overlay">
-                            <h4>Field Research in [Location]</h4>
-                            <p>Brief description of this field research image</p>
-                        </div>
-                    </div>
-                    <div class="gallery-item" data-category="travel">
-                        <div class="image-placeholder">
-                            <i class="fas fa-camera"></i>
-                            <span>Travel Photo</span>
-                        </div>
-                        <div class="gallery-item-overlay">
-                            <h4>Travel to [Location]</h4>
-                            <p>Brief description of this travel image</p>
-                        </div>
-                    </div>
-                    <div class="gallery-item" data-category="conferences">
-                        <div class="image-placeholder">
-                            <i class="fas fa-camera"></i>
-                            <span>Conference Photo</span>
-                        </div>
-                        <div class="gallery-item-overlay">
-                            <h4>Conference on [Topic]</h4>
-                            <p>Brief description of this conference image</p>
-                        </div>
-                    </div>
-                    <div class="gallery-item" data-category="fieldwork">
-                        <div class="image-placeholder">
-                            <i class="fas fa-camera"></i>
-                            <span>Fieldwork Photo</span>
-                        </div>
-                        <div class="gallery-item-overlay">
-                            <h4>Research in [Topic]</h4>
-                            <p>Brief description of this research image</p>
-                        </div>
-                    </div>
-                    <div class="gallery-item" data-category="travel">
-                        <div class="image-placeholder">
-                            <i class="fas fa-video"></i>
-                            <span>Travel Video</span>
-                        </div>
-                        <div class="gallery-item-overlay">
-                            <h4>Travel Video from [Location]</h4>
-                            <p>Brief description of this travel video</p>
-                        </div>
-                    </div>
-                    <div class="gallery-item" data-category="conferences">
-                        <div class="image-placeholder">
-                            <i class="fas fa-camera"></i>
-                            <span>Conference Photo</span>
-                        </div>
-                        <div class="gallery-item-overlay">
-                            <h4>Presentation at [Conference]</h4>
-                            <p>Brief description of this presentation image</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        </div>
+    </div>
+</section>
 
+<!-- Pixelfed Gallery Script -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Configuration
+    const pixelfedUsername = 'disruptnorms';
+    const pixelfedInstance = 'pixelfed.social'; // Change this if your account is on a different instance
+    const apiUrl = `https://${pixelfedInstance}/api/v1/accounts/${pixelfedUsername}/statuses?limit=20`;
+    
+    // Categories for classification (you'll need to update these or implement a tagging system)
+    const categoryMapping = {
+        // Map specific keywords in caption/description to categories
+        'field': 'fieldwork',
+        'research': 'fieldwork',
+        'travel': 'travel',
+        'trip': 'travel',
+        'conference': 'conferences',
+        'presentation': 'conferences',
+        'workshop': 'conferences'
+    };
+    
+    // Function to determine category based on caption
+    function determineCategory(caption) {
+        if (!caption) return 'all';
+        caption = caption.toLowerCase();
+        
+        for (const [keyword, category] of Object.entries(categoryMapping)) {
+            if (caption.includes(keyword)) {
+                return category;
+            }
+        }
+        return 'all'; // Default category
+    }
+    
+    // Fetch images from Pixelfed
+    async function fetchPixelfedImages() {
+        try {
+            const response = await fetch(apiUrl);
+            if (!response.ok) {
+                throw new Error('Failed to fetch images');
+            }
+            
+            const data = await response.json();
+            return data.filter(post => post.media_attachments && post.media_attachments.length > 0);
+        } catch (error) {
+            console.error('Error fetching images from Pixelfed:', error);
+            document.querySelector('.loading-indicator').innerHTML = `
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>Failed to load images. Please try again later.</p>
+            `;
+            return [];
+        }
+    }
+    
+    // Render gallery items
+    function renderGallery(posts) {
+        const galleryGrid = document.getElementById('gallery-grid');
+        galleryGrid.innerHTML = ''; // Clear loading indicator
+        
+        if (posts.length === 0) {
+            galleryGrid.innerHTML = `
+                <div class="no-images-message">
+                    <i class="fas fa-image"></i>
+                    <p>No images found. Check back later!</p>
+                </div>
+            `;
+            return;
+        }
+        
+        posts.forEach((post) => {
+            // For each post with media
+            post.media_attachments.forEach((media) => {
+                if (media.type === 'image' || media.type === 'video') {
+                    const category = determineCategory(post.content);
+                    const caption = stripHtml(post.content) || 'Image from Pixelfed';
+                    const title = caption.split('.')[0]; // Use first sentence as title
+                    
+                    const galleryItem = document.createElement('div');
+                    galleryItem.className = 'gallery-item';
+                    galleryItem.setAttribute('data-category', category);
+                    
+                    if (media.type === 'image') {
+                        galleryItem.innerHTML = `
+                            <div class="image-container">
+                                <img src="${media.preview_url}" alt="${caption}" loading="lazy">
+                            </div>
+                            <div class="gallery-item-overlay">
+                                <h4>${title}</h4>
+                                <p>${caption.length > 100 ? caption.substring(0, 100) + '...' : caption}</p>
+                            </div>
+                        `;
+                    } else if (media.type === 'video') {
+                        galleryItem.innerHTML = `
+                            <div class="video-container">
+                                <video poster="${media.preview_url}" controls>
+                                    <source src="${media.url}" type="${media.mime_type}">
+                                    Your browser does not support the video tag.
+                                </video>
+                                <i class="fas fa-play video-indicator"></i>
+                            </div>
+                            <div class="gallery-item-overlay">
+                                <h4>${title}</h4>
+                                <p>${caption.length > 100 ? caption.substring(0, 100) + '...' : caption}</p>
+                            </div>
+                        `;
+                    }
+                    
+                    galleryGrid.appendChild(galleryItem);
+                }
+            });
+        });
+        
+        // Initialize filtering
+        initializeFilters();
+    }
+    
+    // Strip HTML from content
+    function stripHtml(html) {
+        const temp = document.createElement('div');
+        temp.innerHTML = html;
+        return temp.textContent || temp.innerText || '';
+    }
+    
+    // Initialize filter buttons
+    function initializeFilters() {
+        const filterButtons = document.querySelectorAll('.gallery-filter');
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const filterValue = this.getAttribute('data-filter');
+                
+                // Update active state
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Filter gallery items
+                galleryItems.forEach(item => {
+                    if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+    }
+    
+    // Load gallery
+    fetchPixelfedImages().then(renderGallery);
+});
+</script>
+
+        
         <section id="contact" class="section">
             <div class="section-header">
                 <h2>Contact</h2>
