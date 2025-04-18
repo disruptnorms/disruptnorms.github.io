@@ -1,0 +1,15 @@
+{
+  "name": "Disrupt Norms",
+  "short_name": "DisruptNorms",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#7928CA",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64",
+      "type": "image/x-icon"
+    }
+  ]
+}
