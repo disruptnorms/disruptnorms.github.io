@@ -1,1 +1,797 @@
-test
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WARP WHISPERS | Erika Fidard's Transmissions</title>
+    <style>
+        /* CORE VARIABLES */
+        :root {
+            --deep-space: #1A1F33;
+            --minmatar-rust: #863A29;
+            --signal-teal: #2D8C8C;
+            --wormhole-purple: #5D4E8C;
+            --artifact-gold: #D6A960;
+            --nebula-pink: #BB4C78;
+            --terminal-green: #00FF41;
+            --dark-overlay: rgba(10, 13, 24, 0.85);
+            --grid-line: rgba(45, 140, 140, 0.2);
+            --text-shadow: 0 0 8px rgba(0, 255, 65, 0.5);
+        }
+
+        /* RESET */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* FONTS */
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Barlow:wght@300;400;500;600&display=swap');
+
+        /* BASE STYLES */
+        body {
+            font-family: 'Barlow', sans-serif;
+            background-color: var(--deep-space);
+            color: #e0e0e0;
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(26, 31, 51, 0.7) 0%, rgba(10, 13, 24, 0.95) 100%),
+                url('https://cdnjs.cloudflare.com/ajax/libs/particlesjs/2.2.3/particles.js');
+            background-size: cover;
+            background-attachment: fixed;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
+                linear-gradient(var(--grid-line) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        /* HEADER */
+        header {
+            position: relative;
+            padding: 2rem 0;
+            background: var(--dark-overlay);
+            border-bottom: 1px solid var(--signal-teal);
+            z-index: 10;
+        }
+
+        .nav-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 2.5rem;
+            color: var(--terminal-green);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: var(--text-shadow);
+            position: relative;
+            display: inline-block;
+        }
+
+        .logo::before {
+            content: "WARP WHISPERS";
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            color: var(--wormhole-purple);
+            z-index: -1;
+            opacity: 0.7;
+        }
+
+        .logo::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--terminal-green), transparent);
+        }
+
+        .tagline {
+            margin-left: 20px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 300;
+            color: var(--artifact-gold);
+            opacity: 0.8;
+            font-style: italic;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 2rem;
+        }
+
+        nav ul li a {
+            color: #e0e0e0;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 500;
+            letter-spacing: 1px;
+            position: relative;
+            padding: 5px 0;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--terminal-green);
+            transition: width 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: var(--terminal-green);
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        /* MAIN CONTENT */
+        .main-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 0;
+            position: relative;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            display: flex;
+            margin-bottom: 4rem;
+            background: var(--dark-overlay);
+            border-radius: 5px;
+            overflow: hidden;
+            border: 1px solid rgba(45, 140, 140, 0.3);
+            box-shadow: 0 0 20px rgba(10, 13, 24, 0.5);
+        }
+
+        .hero-text {
+            flex: 1;
+            padding: 2.5rem;
+            position: relative;
+        }
+
+        .hero-text::before {
+            content: "> ACCESSING SECURE CONNECTION...";
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-family: 'Rajdhani', sans-serif;
+            color: var(--terminal-green);
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        .hero-heading {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--terminal-green);
+            text-shadow: var(--text-shadow);
+        }
+
+        .hero-status {
+            display: inline-block;
+            background: rgba(45, 140, 140, 0.2);
+            padding: 0.3rem 0.8rem;
+            border-radius: 3px;
+            margin-bottom: 1.5rem;
+            font-family: 'Rajdhani', sans-serif;
+            border-left: 3px solid var(--signal-teal);
+        }
+
+        .hero-status span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: var(--terminal-green);
+            border-radius: 50%;
+            margin-right: 8px;
+            position: relative;
+        }
+
+        .hero-status span::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--terminal-green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .hero-image {
+            flex: 1;
+            background-image: url('/api/placeholder/600/450');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .hero-image::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--dark-overlay), transparent);
+        }
+
+        .scanner-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--terminal-green);
+            box-shadow: 0 0 10px 2px rgba(0, 255, 65, 0.7);
+            animation: scan 3s infinite;
+        }
+
+        /* PROFILE SECTION */
+        .profile-section {
+            margin-bottom: 4rem;
+            background: var(--dark-overlay);
+            border-radius: 5px;
+            padding: 2rem;
+            border: 1px solid rgba(45, 140, 140, 0.3);
+            position: relative;
+        }
+
+        .profile-section::before {
+            content: "> PERSONNEL FILE DECLASSIFIED";
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-family: 'Rajdhani', sans-serif;
+            color: var(--terminal-green);
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            padding-top: 1rem;
+        }
+
+        .profile-title {
+            flex: 1;
+        }
+
+        .profile-title h2 {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            font-size: 1.8rem;
+            color: var(--terminal-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-meta {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .meta-item span {
+            color: var(--artifact-gold);
+            margin-right: 0.5rem;
+        }
+
+        .profile-tags {
+            margin-bottom: 1.5rem;
+        }
+
+        .tag {
+            display: inline-block;
+            background: rgba(134, 58, 41, 0.3);
+            color: #e0e0e0;
+            padding: 0.2rem 0.8rem;
+            border-radius: 15px;
+            margin-right: 0.5rem;
+            font-size: 0.9rem;
+            border: 1px solid var(--minmatar-rust);
+        }
+
+        .profile-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .profile-section h3 {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 500;
+            color: var(--artifact-gold);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(214, 169, 96, 0.3);
+        }
+
+        /* VIDEOS SECTION */
+        .videos-section {
+            margin-bottom: 4rem;
+            background: var(--dark-overlay);
+            border-radius: 5px;
+            padding: 2rem;
+            border: 1px solid rgba(45, 140, 140, 0.3);
+            position: relative;
+        }
+
+        .videos-section::before {
+            content: "> TRANSMISSION ARCHIVES";
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-family: 'Rajdhani', sans-serif;
+            color: var(--terminal-green);
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        .section-heading {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            font-size: 1.8rem;
+            color: var(--terminal-green);
+            margin-bottom: 1.5rem;
+            padding-top: 1rem;
+        }
+
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .video-card {
+            background: rgba(26, 31, 51, 0.7);
+            border: 1px solid rgba(45, 140, 140, 0.3);
+            border-radius: 3px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(10, 13, 24, 0.5);
+        }
+
+        .video-thumbnail {
+            position: relative;
+            height: 180px;
+            background-image: url('/api/placeholder/300/180');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .category-indicator {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--wormhole-purple);
+            color: #e0e0e0;
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(10, 13, 24, 0.7);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .play-button::before {
+            content: "";
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-left: 15px solid var(--terminal-green);
+            margin-left: 5px;
+        }
+
+        .video-thumbnail:hover .play-button {
+            opacity: 1;
+        }
+
+        .video-info {
+            padding: 1rem;
+        }
+
+        .video-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--artifact-gold);
+        }
+
+        .video-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #a0a0a0;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .view-all {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background: transparent;
+            color: var(--terminal-green);
+            border: 1px solid var(--terminal-green);
+            padding: 0.8rem 2rem;
+            border-radius: 3px;
+            font-family: 'Rajdhani', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background: rgba(0, 255, 65, 0.1);
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--dark-overlay);
+            border-top: 1px solid var(--signal-teal);
+            padding: 2rem 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .footer-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-nav {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-nav a {
+            color: #a0a0a0;
+            text-decoration: none;
+            margin: 0 1rem;
+            transition: color 0.3s ease;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .footer-nav a:hover {
+            color: var(--terminal-green);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(26, 31, 51, 0.7);
+            margin: 0 0.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--signal-teal);
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background: rgba(45, 140, 140, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            color: #707070;
+            font-size: 0.9rem;
+        }
+
+        .signal-affiliation {
+            margin-top: 1rem;
+            color: var(--signal-teal);
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+
+        /* ANIMATIONS */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.7;
+            }
+            50% {
+                transform: scale(1.5);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0;
+            }
+        }
+
+        @keyframes scan {
+            0% {
+                top: 0;
+            }
+            100% {
+                top: 100%;
+            }
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .nav-container, .hero {
+                flex-direction: column;
+            }
+
+            .logo {
+                margin-bottom: 1rem;
+            }
+
+            nav ul {
+                margin-top: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            nav ul li {
+                margin: 0.5rem;
+            }
+
+            .profile-details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <div class="brand">
+                <div class="logo">WARP WHISPERS</div>
+                <div class="tagline">Chronicles from the Void</div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Explorer's Log</a></li>
+                    <li><a href="#">Cultural Codex</a></li>
+                    <li><a href="#">Artifact Archives</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <section class="hero">
+            <div class="hero-text">
+                <div class="hero-status"><span></span>Signal Cartel Associate Active</div>
+                <h1 class="hero-heading">Stories from Beyond the Baseline</h1>
+                <p>Welcome to Warp Whispers, the personal archive of Erika Fidard, Minmatar explorer and member of Signal Cartel. Join me as I document my journeys through the stars, studying cultures, uncovering artifacts, and sharing the untold stories of New Eden.</p>
+                <p>Every ruin tells a story. Every civilization has its whispers.</p>
+                <div style="margin-top: 1.5rem;">
+                    <a href="#" class="btn">Latest Expedition</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="scanner-line"></div>
+            </div>
+        </section>
+
+        <section class="profile-section">
+            <div class="profile-header">
+                <div class="profile-title">
+                    <h2>Erika Fidard – Minmatar Explorer & Scholar of the Stars</h2>
+                    <div class="profile-meta">
+                        <div class="meta-item">
+                            <span>Tribe:</span> Sebiestor
+                        </div>
+                        <div class="meta-item">
+                            <span>Homeworld:</span> Hulm III, Metropolis Region
+                        </div>
+                    </div>
+                    <div class="profile-tags">
+                        <span class="tag">Anthropologist</span>
+                        <span class="tag">Archaeologist</span>
+                        <span class="tag">Signal Cartel</span>
+                        <span class="tag">Researcher</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-details">
+                <div class="backstory">
+                    <h3>Backstory</h3>
+                    <p>Erika Fidard was born in the shadow of hardship. Her parents, once hopeful laborers on a struggling orbital reprocessing platform, scraped together every resource they had to give Erika a life beyond the grind of generational poverty and exploitation. They believed deeply in the dream of capsuleerhood—not for power, but for freedom, legacy, and the chance to rewrite a story too often dictated by colonial conquest.</p>
+                    <p>By the time she was accepted into the <strong>Republic University's Academy at Eystur</strong>, her parents were already ill from years of exposure to industrial waste and overwork. They would not live to see her graduate.</p>
+                    <p>Their sacrifice defined her: not with bitterness, but resolve.</p>
+                </div>
+
+                <div class="academy-life">
+                    <h3>Academy Life</h3>
+                    <p>At the academy, Erika distinguished herself in xenoarchaeology and cultural anthropology. While many of her peers were drawn to combat or ISK-driven careers, Erika studied relics and ruins, both Amarrian and ancient. She became fascinated by the forgotten epochs of New Eden—pre-collapse civilizations, lost Talocan and Yan Jung artifacts, even the mythic precursors to the Minmatar tribes.</p>
+                    <p>She spent her nights in archives, her days volunteering on Republic expeditions to salvage ruins from contested zones. Her thesis, <strong>"Ritual Objects of Resistance: Reclaiming Cultural Memory in Post-Imperial Territories,"</strong> won quiet acclaim among radical academics—and quiet suspicion from those who feared what her discoveries might mean for power structures today.</p>
+                </div>
+
+                <div class="current-life">
+                    <h3>Current Life as a Capsuleer</h3>
+                    <p>Now piloting under the banner of <strong>Signal Cartel</strong>, Erika is a wanderer by necessity and calling. Her ship is part laboratory, part sanctuary. She dives into wormholes and haunted ruins not just for ISK or glory, but for meaning. Each data relic is a whisper from the past. Each shattered moon, a warning.</p>
+                    <p>Though she claims neutrality, her loyalty to the Republic—and her tribe's spirit of questioning—runs deep. She avoids combat, but is no stranger to making enemies in the pursuit of buried truths. Some call her a dreamer. Others call her dangerous.</p>
+                    <p>Erika calls herself a witness.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="videos-section">
+            <h2 class="section-heading">Latest Transmissions</h2>
+            <div class="videos-grid">
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <div class="category-indicator">Explorer's Log</div>
+                        <div class="play-button"></div>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Wormhole J213114: Unexpected Discoveries</h3>
+                        <div class="video-meta">
+                            <span>12 Apr 2025</span>
+                            <span>15:27</span>
+                        </div>
+                        <p>Documenting my encounter with unusual Sleeper architecture in an uncharted wormhole system.</p>
+                    </div>
+                </div>
+
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <div class="category-indicator">Cultural Codex</div>
+                        <div class="play-button"></div>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">The Sebiestor Legacy of Technological Innovation</h3>
+                        <div class="video-meta">
+                            <span>5 Apr 2025</span>
+                            <span>22:11</span>
+                        </div>
+                        <p>Exploring how Sebiestor ingenuity shaped Minmatar resistance and survival through the ages.</p>
+                    </div>
+                </div>
+
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <div class="category-indicator">Artifact Archives</div>
+                        <div class="play-button"></div>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Talocan Inscriptions: Decoding Ancient Messages</h3>
+                        <div class="video-meta">
+                            <span>28 Mar 2025</span>
+                            <span>18:45</span>
+                        </div>
+                        <p>Analysis of unusual markings found on recovered Talocan artifacts from deep space expedition.</p>
+                    </div>
+                </div>
+
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <div class="category-indicator">Signal Stories</div>
+                        <div class="play-button"></div>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Day in the Life: Signal Cartel Exploration Fleet</h3>
+                        <div class="video-meta">
+                            <span>15 Mar 2025</span>
+                            <span>24:02</span>
+                        </div>
+                        <p>Joining a Signal Cartel fleet for coordinated exploration of nullsec archeological sites.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="view-all">
+                <a href="#" class="btn">View All Transmissions</a>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-nav">
+                <a href="#">Home</a>
+                <a href="#">Archives</a>
+                <a href="#">About Erika</a>
+                <a href="#">Signal Cartel</a>
+                <a href="#">Contact</a>
+            </div>
+            <div class="social-links">
+                <a href="#" class="social-icon">YT</a>
+                <a href="#" class="social-icon">TW</a>
+                <a href="#" class="social-icon">DS</a>
+            </div>
+            <div class="copyright">
+                © 2025 Warp Whispers | All transmissions property of Erika Fidard
+            </div>
+            <div class="signal-affiliation">
+                "Be the catalyst, not the catalyst." - Signal Cartel Credo
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
